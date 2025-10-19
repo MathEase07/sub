@@ -1,85 +1,57 @@
-<!DOCTYPE html>
-<html lang="tl">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Sa Huling Jeep ng Gabi — Subtitles</title>
-  <style>
-    :root {
-      --bg: #000;
-      --fg: #fff;
-      --muted: rgba(255,255,255,0.65);
-    }
-    html,body {
-      height:100%;
-      margin:0;
-      background:var(--bg);
-      color:var(--fg);
-      font-family: "Arial", Helvetica, sans-serif;
-    }
-    .wrap {
-      display:flex;
-      flex-direction:column;
-      height:100%;
-      align-items:center;
-      justify-content:center;
-      padding:20px;
-      box-sizing:border-box;
-      text-align:center;
-    }
-    #subtitle {
-      font-family: 'MistakeNote', "Segoe UI", Roboto, Arial, sans-serif;
-      color: #ff0000; /* red */
-      font-size: clamp(18px, 4vw, 30px);
-      line-height:1.4;
-      max-width: 92%;
-      background: rgba(0,0,0,0.45);
-      padding: 18px 22px;
-      border-radius: 12px;
-      box-shadow: 0 6px 18px rgba(0,0,0,0.6);
-      transition: opacity .35s, transform .35s;
-      opacity: 1;
-    }
-    #time {
-      margin-top:12px;
-      color: var(--muted);
-      font-size: 0.85rem;
-    }
-    /* small helper for debugging */
-    #debug {
-      position:fixed;
-      left:8px;
-      bottom:8px;
-      color:var(--muted);
-      font-size:12px;
-      opacity:0.9;
-    }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Sa Huling Jeep ng Gabi — Karaoke Subtitles</title>
+<style>
+  body { background:#0b0b0b; color:#eee; font-family: "Segoe UI", Roboto, Arial; margin:0; padding:0; display:flex; flex-direction:column; min-height:100vh;}
+  .player { margin:auto; max-width:900px; width:95%; padding:20px; box-sizing:border-box; }
+  .title { text-align:center; font-size:26px; margin-bottom:8px; color:#ffd1a9; }
+  .controls { display:flex; gap:8px; justify-content:center; align-items:center; margin-bottom:12px; }
+  button { padding:10px 14px; font-size:15px; border-radius:8px; border:none; cursor:pointer; background:#1976d2; color:white; }
+  button.secondary { background:#444; }
+  .time { color:#bbb; font-size:14px; }
+  .progress { height:10px; background:#222; border-radius:6px; overflow:hidden; margin:10px 0; }
+  .progress > div { height:100%; width:0%; background: linear-gradient(90deg,#ff8a65,#ffd54f); transition:width 0.15s linear; }
+  .subtitleBox { background: rgba(255,255,255,0.04); padding:14px; border-radius:10px; min-height:120px; display:flex; align-items:center; justify-content:center; text-align:center; }
+  .line { font-size:20px; line-height:1.4; color:#ddd; opacity:0.4; transition: all .18s ease; padding:2px 6px; border-radius:6px; }
+  .line.active { opacity:1; transform:scale(1.02); color:#fff; text-shadow:0 2px 8px rgba(0,0,0,0.6); background: rgba(255,255,255,0.03); }
+  .small { font-size:13px; color:#9aa; margin-top:10px; text-align:center; }
+  footer { text-align:center; color:#7b7b7b; padding:12px 0; font-size:13px; }
+  @media (max-width:520px){ .line{ font-size:16px } }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <div id="subtitle">“Sa Huling Jeep ng Gabi”</div>
-    <div id="time"></div>
+  <div class="player" id="player">
+    <div class="title">Sa Huling Jeep ng Gabi — Subtitles (Karaoke)</div>
+    <div class="controls">
+      <button id="playBtn">Play</button>
+      <button id="pauseBtn" class="secondary">Pause</button>
+      <button id="rewBtn" class="secondary">Restart</button>
+      <div class="time" id="timeDisplay">0:00 / 0:00</div>
+    </div>
+
+    <div class="progress" id="progress"><div></div></div>
+
+    <div class="subtitleBox" id="subtitleBox" aria-live="polite">
+      <!-- lines will be injected here -->
+      <div id="linesContainer" style="width:100%"></div>
+    </div>
+
+    <div class="small">Use <strong>Play</strong> to start the subtitles. You can sync an audio file to this manually later.</div>
   </div>
-  <div id="debug" style="display:none;"></div>
+
+  <footer>Provided by your script — "Sa Huling Jeep ng Gabi"</footer>
 
 <script>
 /*
-  Generated subtitles for "Sa Huling Jeep ng Gabi"
-  - The script provided by the user was parsed as sequential phrases with durations (e.g., (3s)).
-  - Each subtitle entry has a start time in seconds (cumulative) and the visible text (without the (Ns) markers).
-  - Controls: App Inventor should set WebViewer.WebViewString to "play", "pause", or "stop".
-  - There's also a setOffset(seconds) function to shift all subtitle timings (if audio has lead-in silence).
+  The cues array below is generated from your exact script text and timing marks.
+  Each cue: {start: <seconds start (cumulative)>, end: <seconds end>, text: "<exact preceding text>"}
 */
 
-/* === Subtitles array ===
-   Each item: { t: <start seconds>, text: "<subtitle text>" }
-   NOTE: I grouped phrases into readable subtitle lines while preserving timings.
-*/
-const subtitles = [
-  /* I'll use the durations provided, accumulated to create start times.
-     Start at 0. */
- { t: 12.0, text: "Sa lahat ng hindi inaasahan sa buhay, tulad ng sabayang pagpatak ng ulan at LBM, o yung pag-message mo sa crush mo na isi-seen lang" },
+const cues = [
+{ t: 12.0, text: "Sa lahat ng hindi inaasahan sa buhay, tulad ng sabayang pagpatak ng ulan at LBM, o yung pag-message mo sa crush mo na isi-seen lang" },
   { t: 23.0, text: "Walang mas nakakagulat kaysa sa pagbabalik ng isang taong hindi mo na inakalang babalik pa." },
   { t: 31.0, text: "Ito ang kwento ni Bea… at ng isang jeepney ride na magbabago ng lahat." },
   { t: 38.0, text: "[Sound effects: Ulan, jeepney engine starting, 'para po!']" },
@@ -263,176 +235,149 @@ const subtitles = [
   { t: 1175.0, text: "Siguro’y ayaw na niyang makita si Bea na patuloy na nahihirapan, kaya’t tinabihan niya ito sa huling sakay." },
   { t: 1180.0, text: "Ang jeep na akala ng lahat ay patungo sa Guis-Guis, ay naging jeep papunta sa kabilang dulo ng mundo." },
   { t: 1185.0, text: "At sa huling biyahe ng gabi, muling nagtagpo ang dalawang pusong pinagbuklod ng pag-ibig — hindi man sa mundong ito, kundi sa kabila, kung saan wala nang sakit, wala nang luha, at walang iwanan." },
-  { t: 1190.0, text: "The End." }
+  { t: 1363.0, text: "The End." }
 ];
 
 
-];
 
-/* === Subtitle player state === */
-let playing = false;
-let startEpoch = 0;       // Date.now() when playing started/resumed
-let elapsedBefore = 0;    // seconds elapsed before current play (for pause/resume)
+const totalDuration = cues.length ? cues[cues.length-1].end : 0;
+
+// prepare UI
+const linesContainer = document.getElementById('linesContainer');
+cues.forEach((c, i) => {
+  const div = document.createElement('div');
+  div.className = 'line';
+  div.id = 'line-'+i;
+  div.textContent = c.text;
+  linesContainer.appendChild(div);
+});
+
+// helpers
+function formatTime(s) {
+  s = Math.max(0, Math.floor(s));
+  const m = Math.floor(s/60);
+  const sec = s % 60;
+  return m + ':' + (sec<10? '0' : '') + sec;
+}
+
+// state
+let startT = null;
+let paused = true;
+let pauseOffset = 0; // seconds
 let raf = null;
-let offset = 0;           // global offset in seconds (if you need to shift timings)
 
-/* Helpers */
-function formatSeconds(s) {
-  return (s >= 0) ? s.toFixed(1) + "s" : "0.0s";
-}
+const playBtn = document.getElementById('playBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const rewBtn = document.getElementById('rewBtn');
+const timeDisplay = document.getElementById('timeDisplay');
+const progressBar = document.getElementById('progress').firstElementChild;
 
-function findCurrentSubtitle(sec) {
-  // find the last subtitle whose t <= sec
-  // subtitles are ordered by t
-  for (let i = subtitles.length - 1; i >= 0; i--) {
-    if (sec + 1e-6 >= (subtitles[i].t + offset)) return {index: i, item: subtitles[i]};
+function setActive(index) {
+  // clear all small set active class
+  const elems = document.querySelectorAll('.line');
+  elems.forEach((el, i) => {
+    if (i === index) el.classList.add('active');
+    else el.classList.remove('active');
+  });
+  // scroll active into view slightly
+  const active = document.getElementById('line-'+index);
+  if (active) {
+    active.scrollIntoView({behavior:'smooth', block:'center'});
   }
-  return null;
 }
 
-/* Render loop */
-let lastShownIndex = -1;
-function renderLoop() {
-  const now = Date.now();
-  const elapsed = (now - startEpoch) / 1000 + elapsedBefore;
-  const sec = elapsed;
-  const found = findCurrentSubtitle(sec);
-  if (found) {
-    if (found.index !== lastShownIndex) {
-      lastShownIndex = found.index;
-      const text = found.item.text;
-      document.getElementById('subtitle').style.opacity = 0;
-      // small delay for fade
-      setTimeout(()=> {
-        document.getElementById('subtitle').innerText = text;
-        document.getElementById('subtitle').style.opacity = 1;
-      }, 160);
+function updateFrame() {
+  const now = performance.now();
+  const elapsed = ((now - startT) / 1000) + pauseOffset;
+  // update time display
+  timeDisplay.textContent = formatTime(elapsed) + ' / ' + formatTime(totalDuration);
+
+  // update progress
+  const pct = Math.min(100, (elapsed / totalDuration) * 100);
+  progressBar.style.width = (isFinite(pct) ? pct : 0) + '%';
+
+  // find active cue by elapsed
+  let activeIndex = -1;
+  for (let i = cues.length - 1; i >= 0; i--) {
+    if (elapsed >= cues[i].start) {
+      if (elapsed < cues[i].end) activeIndex = i;
+      else if (i === cues.length-1 && elapsed >= cues[i].end) activeIndex = i;
+      break;
     }
   }
-  document.getElementById('time').innerText = formatSeconds(sec);
-  raf = requestAnimationFrame(renderLoop);
-}
-
-/* Controls */
-function doPlay() {
-  if (!playing) {
-    playing = true;
-    startEpoch = Date.now();
-    raf = requestAnimationFrame(renderLoop);
-    // reveal first subtitle immediately if already within range
-    lastShownIndex = -1;
-  }
-}
-
-function doPause() {
-  if (playing) {
-    playing = false;
-    elapsedBefore += (Date.now() - startEpoch) / 1000;
-    if (raf) cancelAnimationFrame(raf);
-  }
-}
-
-function doStop() {
-  playing = false;
-  elapsedBefore = 0;
-  if (raf) cancelAnimationFrame(raf);
-  lastShownIndex = -1;
-  document.getElementById('subtitle').innerText = "Sa Huling Jeep ng Gabi";
-  document.getElementById('time').innerText = "";
-}
-
-/* Optional: allow App Inventor to set an offset reset or set current time */
-function setOffset(seconds) {
-  offset = seconds;
-}
-function setTime(seconds) {
-  // set the internal elapsed to `seconds` (useful if you get Player.CurrentPosition)
-  elapsedBefore = seconds;
-  if (playing) {
-    startEpoch = Date.now();
+  if (activeIndex >= 0) {
+    setActive(activeIndex);
   } else {
-    // not playing — update display immediately
-    lastShownIndex = -1;
-    const found = findCurrentSubtitle(seconds);
-    if (found) {
-      document.getElementById('subtitle').innerText = found.item.text;
-      document.getElementById('time').innerText = formatSeconds(seconds);
-    }
+    // no cue yet: clear all
+    document.querySelectorAll('.line').forEach(el => el.classList.remove('active'));
   }
+
+  if (elapsed >= totalDuration) {
+    // finished
+    paused = true;
+    cancelAnimationFrame(raf);
+    raf = null;
+    playBtn.disabled = false;
+    pauseBtn.disabled = true;
+    return;
+  }
+
+  raf = requestAnimationFrame(updateFrame);
 }
 
-/* === Communication with MIT App Inventor ===
-   MIT AI2 (WebViewer) can call setWebViewString to send commands.
-   We'll poll window.AppInventor.getWebViewString() if available (common pattern).
-   Accept commands:
-     play  -> start/resume
-     pause -> pause
-     stop  -> stop/reset
-     time:NNN -> set current time (in seconds)  e.g. "time:45.3"
-     offset:NNN -> set timing offset in seconds (positive or negative)
-*/
-let lastCmd = "";
-
-function processCommand(cmd) {
-  if (!cmd) return;
-  if (cmd === lastCmd) return; // nothing new
-  lastCmd = cmd;
-  // parse possible values
-  if (cmd === "play") {
-    doPlay();
-  } else if (cmd === "pause") {
-    doPause();
-  } else if (cmd === "stop") {
-    doStop();
-  } else if (cmd.startsWith("time:")) {
-    const v = parseFloat(cmd.split(":")[1]);
-    if (!isNaN(v)) setTime(v);
-  } else if (cmd.startsWith("offset:")) {
-    const v = parseFloat(cmd.split(":")[1]);
-    if (!isNaN(v)) setOffset(v);
+function startPlayback() {
+  if (!paused) return;
+  paused = false;
+  if (!startT) {
+    startT = performance.now();
   } else {
-    // ignore unknown
-    // show debug if needed
-    //document.getElementById('debug').innerText = "Unknown cmd: " + cmd;
+    startT = performance.now();
   }
+  // already had pauseOffset accumulated
+  playBtn.disabled = true;
+  pauseBtn.disabled = false;
+  if (!raf) raf = requestAnimationFrame(updateFrame);
 }
 
-/* Polling strategy (works for App Inventor WebViewer):
-   App Inventor sets WebViewer.WebViewString to a value which becomes accessible via
-   window.AppInventor.getWebViewString() inside the web page. We'll poll it every 300ms.
-*/
-function pollForCommands() {
-  try {
-    if (window.AppInventor && typeof window.AppInventor.getWebViewString === "function") {
-      const cmd = window.AppInventor.getWebViewString();
-      if (cmd && cmd.length) {
-        processCommand(cmd.trim());
-        // Clear webview string (if the environment supports set)
-        if (typeof window.AppInventor.setWebViewString === "function") {
-          window.AppInventor.setWebViewString(""); // reset on supported hosts
-        }
-      }
-    } else {
-      // fallback: some AI2 versions call setWebViewString with incoming messages,
-      // but if not present, App Inventor can also call JS functions—however polling is safe.
-    }
-  } catch (e) {
-    // ignore
-  }
+function pausePlayback() {
+  if (paused) return;
+  paused = true;
+  // compute elapsed so far and store into pauseOffset
+  const now = performance.now();
+  pauseOffset += ((now - startT) / 1000);
+  startT = null;
+  if (raf) { cancelAnimationFrame(raf); raf = null; }
+  playBtn.disabled = false;
+  pauseBtn.disabled = true;
 }
-setInterval(pollForCommands, 300);
 
-/* Expose functions for direct JS calling (if you want to call from App Inventor via EvaluateJavaScript) */
-window.subtitleControls = {
-  play: doPlay,
-  pause: doPause,
-  stop: doStop,
-  setTime: setTime,
-  setOffset: setOffset
-};
+function restartPlayback() {
+  paused = true;
+  if (raf) { cancelAnimationFrame(raf); raf = null; }
+  startT = null;
+  pauseOffset = 0;
+  document.querySelectorAll('.line').forEach(el => el.classList.remove('active'));
+  progressBar.style.width = '0%';
+  timeDisplay.textContent = '0:00 / ' + formatTime(totalDuration);
+  playBtn.disabled = false;
+  pauseBtn.disabled = true;
+}
 
-/* initialize */
-doStop(); // show initial message
+// attach handlers
+playBtn.addEventListener('click', () => {
+  startPlayback();
+});
+pauseBtn.addEventListener('click', () => {
+  pausePlayback();
+});
+rewBtn.addEventListener('click', () => {
+  restartPlayback();
+});
+
+
+// initialize UI state
+timeDisplay.textContent = '0:00 / ' + formatTime(totalDuration);
+pauseBtn.disabled = true;
 </script>
 </body>
 </html>
